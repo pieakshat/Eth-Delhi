@@ -39,81 +39,88 @@ export default function Home() {
         </section>
 
         {/* How it works */}
-        <section id="how" className="px-6 py-12 border-t border-gray-900">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-lg font-semibold mb-6">How it works</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="border border-gray-800 rounded p-5">
-                <div className="text-sm text-gray-400">Step 1</div>
-                <div className="mt-1 font-medium">Generate keys</div>
-                <p className="mt-2 text-sm text-gray-400">Create deterministic RSA keys from your biometric input. Never leaves device.</p>
-              </div>
-              <div className="border border-gray-800 rounded p-5">
-                <div className="text-sm text-gray-400">Step 2</div>
-                <div className="mt-1 font-medium">Encrypt & share</div>
-                <p className="mt-2 text-sm text-gray-400">Encrypt message or IPFS CID with recipient’s public key and share ciphertext.</p>
-              </div>
-              <div className="border border-gray-800 rounded p-5">
-                <div className="text-sm text-gray-400">Step 3</div>
-                <div className="mt-1 font-medium">Decrypt & retrieve</div>
-                <p className="mt-2 text-sm text-gray-400">Recipient decrypts locally and fetches file via IPFS using the CID.</p>
-              </div>
-            </div>
+        <section id="how" className="px-6 py-14 md:py-16 border-t border-gray-900">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-center text-lg font-semibold mb-8">How it works</h2>
+            <ol className="grid md:grid-cols-3 gap-5 md:gap-6">
+              <li className="border border-gray-800 rounded p-5">
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-gray-700 text-xs text-gray-300">1</span>
+                  <span className="font-medium">Generate keys</span>
+                </div>
+                <p className="mt-2 text-sm text-gray-400">Derive deterministic RSA keys from your biometric input. Keys never leave your device.</p>
+              </li>
+              <li className="border border-gray-800 rounded p-5">
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-gray-700 text-xs text-gray-300">2</span>
+                  <span className="font-medium">Encrypt & share</span>
+                </div>
+                <p className="mt-2 text-sm text-gray-400">Encrypt a message or IPFS CID with the recipient’s public key and share only the ciphertext.</p>
+              </li>
+              <li className="border border-gray-800 rounded p-5">
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-gray-700 text-xs text-gray-300">3</span>
+                  <span className="font-medium">Decrypt & retrieve</span>
+                </div>
+                <p className="mt-2 text-sm text-gray-400">Recipient decrypts locally using their private key and, for files, fetches via IPFS using the CID.</p>
+              </li>
+            </ol>
           </div>
         </section>
 
         {/* Problem → Solution */}
-        <section className="px-6 py-12 border-t border-gray-900">
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-lg font-semibold mb-3">The problem</h3>
-              <ul className="space-y-2 text-sm text-gray-400 list-disc list-inside">
-                <li>Sensitive files sent over untrusted clouds</li>
-                <li>Manual key exchange and operational friction</li>
-                <li>Centralized storage and access logs</li>
+        <section className="px-6 py-14 md:py-16 border-t border-gray-900">
+          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6 md:gap-8">
+            <div className="border border-gray-800 rounded p-5">
+              <h3 className="text-base font-semibold mb-2">The problem</h3>
+              <ul className="space-y-1.5 text-sm text-gray-400 list-disc list-inside">
+                <li>Trusting centralized clouds with sensitive data</li>
+                <li>Key exchange is clunky and error‑prone</li>
+                <li>Access logs and metadata accumulation</li>
               </ul>
             </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-3">Our approach</h3>
-              <ul className="space-y-2 text-sm text-gray-400 list-disc list-inside">
-                <li>Local, deterministic RSA from biometric input</li>
-                <li>Client‑side encryption; transmit ciphertext only</li>
-                <li>IPFS content addressing, no centralized files</li>
+            <div className="border border-gray-800 rounded p-5">
+              <h3 className="text-base font-semibold mb-2">Our approach</h3>
+              <ul className="space-y-1.5 text-sm text-gray-400 list-disc list-inside">
+                <li>Deterministic RSA from your biometric input (local)</li>
+                <li>Encrypt on the client; share ciphertext only</li>
+                <li>IPFS content addressing instead of centralized storage</li>
               </ul>
             </div>
           </div>
         </section>
 
         {/* Capabilities */}
-        <section className="px-6 py-12 border-t border-gray-900">
+        <section className="px-6 py-14 md:py-16 border-t border-gray-900">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-lg font-semibold mb-6">Capabilities</h2>
-            <div className="grid md:grid-cols-4 gap-6">
-              <div className="border border-gray-800 rounded p-5 text-sm">Encrypt messages</div>
-              <div className="border border-gray-800 rounded p-5 text-sm">Upload & encrypt files (IPFS)</div>
-              <div className="border border-gray-800 rounded p-5 text-sm">Decrypt & download</div>
-              <div className="border border-gray-800 rounded p-5 text-sm">Clipboard‑safe CIDs</div>
+            <h2 className="text-center text-lg font-semibold mb-8">Capabilities</h2>
+            <div className="grid md:grid-cols-4 gap-5 md:gap-6 text-sm">
+              <div className="border border-gray-800 rounded p-5">Encrypt messages</div>
+              <div className="border border-gray-800 rounded p-5">Upload & encrypt files (IPFS)</div>
+              <div className="border border-gray-800 rounded p-5">Decrypt & download</div>
+              <div className="border border-gray-800 rounded p-5">Clipboard‑safe CIDs</div>
             </div>
           </div>
         </section>
 
         {/* Security */}
-        <section id="security" className="px-6 py-12 border-t border-gray-900">
+        <section id="security" className="px-6 py-14 md:py-16 border-t border-gray-900">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-lg font-semibold mb-6">Security model</h2>
-            <div className="grid md:grid-cols-3 gap-6 text-sm">
+            <h2 className="text-center text-lg font-semibold mb-8">Security model</h2>
+            <div className="grid md:grid-cols-4 gap-5 md:gap-6 text-sm">
               <div className="border border-gray-800 rounded p-5">Biometric‑derived keys generated locally</div>
               <div className="border border-gray-800 rounded p-5">Client‑side RSA; ciphertext only transmitted</div>
               <div className="border border-gray-800 rounded p-5">IPFS storage with content addressing</div>
+              <div className="border border-gray-800 rounded p-5">No server‑side secrets or plaintext</div>
             </div>
           </div>
         </section>
 
         {/* Quick actions */}
-        <section className="px-6 py-12 border-t border-gray-900">
+        <section className="px-6 py-14 md:py-16 border-t border-gray-900">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-lg font-semibold mb-6">Try it now</h2>
-            <div className="grid md:grid-cols-3 gap-6 text-sm">
+            <h2 className="text-center text-lg font-semibold mb-8">Try it now</h2>
+            <div className="grid md:grid-cols-3 gap-5 md:gap-6 text-sm">
               <a href="/dashboard" className="border border-gray-800 rounded p-5 hover:bg-gray-900">Encrypt a message</a>
               <a href="/dashboard" className="border border-gray-800 rounded p-5 hover:bg-gray-900">Upload & encrypt a file</a>
               <a href="/dashboard" className="border border-gray-800 rounded p-5 hover:bg-gray-900">Decrypt & download</a>
@@ -122,10 +129,10 @@ export default function Home() {
         </section>
 
         {/* API (collapsed) */}
-        <section className="px-6 py-12 border-t border-gray-900">
+        <section className="px-6 py-14 md:py-16 border-t border-gray-900">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-lg font-semibold mb-6">API endpoints</h2>
-            <div className="grid md:grid-cols-2 gap-6 text-sm">
+            <h2 className="text-center text-lg font-semibold mb-8">API endpoints</h2>
+            <div className="grid md:grid-cols-2 gap-5 md:gap-6 text-sm">
               <details className="border border-gray-800 rounded p-5">
                 <summary className="cursor-pointer">POST /generate_keys</summary>
                 <pre className="mt-3 text-xs text-gray-300 overflow-auto">{`{
@@ -162,10 +169,10 @@ export default function Home() {
         </section>
 
         {/* FAQ */}
-        <section className="px-6 py-12 border-t border-gray-900">
+        <section className="px-6 py-14 md:py-16 border-t border-gray-900">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-lg font-semibold mb-6">FAQ</h2>
-            <div className="grid md:grid-cols-2 gap-6 text-sm">
+            <h2 className="text-center text-lg font-semibold mb-8">FAQ</h2>
+            <div className="grid md:grid-cols-2 gap-5 md:gap-6 text-sm">
               <details className="border border-gray-800 rounded p-5">
                 <summary className="cursor-pointer">What data leaves my device?</summary>
                 <p className="mt-3 text-gray-400">Only ciphertext and CIDs. Biometric input and keys never leave your device.</p>
