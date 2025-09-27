@@ -154,46 +154,47 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-white p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-medium text-black mb-3">
-            BioCrypt
-          </h1>
-          <p className="text-gray-600 text-sm max-w-lg mx-auto">
-            Secure file sharing with biometric encryption using IPFS and RSA cryptography
-          </p>
-        </div>
+    <div className="min-h-screen bg-black text-white p-8">
+      <div className="max-w-6xl mx-auto grid grid-cols-12 gap-8">
+        <aside className="col-span-12 md:col-span-3">
+          <h1 className="text-3xl font-semibold mb-6">BioCrypt</h1>
+          <nav className="space-y-1 text-sm">
+            <a href="#generate" className="block px-3 py-2 rounded border border-transparent hover:border-gray-700">Generate Keys</a>
+            <a href="#encrypt" className="block px-3 py-2 rounded border border-transparent hover:border-gray-700">Encrypt Message</a>
+            <a href="#decrypt" className="block px-3 py-2 rounded border border-transparent hover:border-gray-700">Decrypt Message</a>
+            <a href="#upload" className="block px-3 py-2 rounded border border-transparent hover:border-gray-700">Upload & Encrypt</a>
+            <a href="#download" className="block px-3 py-2 rounded border border-transparent hover:border-gray-700">Decrypt & Download</a>
+          </nav>
+          {alert && (
+            <div className="mt-6 text-xs border border-gray-800 rounded p-3 text-gray-200">
+              {alert.message}
+            </div>
+          )}
+        </aside>
 
-        {alert && (
-          <div className={`mb-6 p-3 rounded border text-sm ${alert.type === 'error' ? 'border-gray-300 bg-gray-50 text-gray-800' : 'border-gray-300 bg-gray-50 text-gray-800'}`}>
-            {alert.message}
-          </div>
-        )}
-
-        <div className="space-y-8">
-            <div className="border border-gray-200 rounded p-6">
-              <h2 className="text-lg font-medium text-black mb-2">
+        <div className="col-span-12 md:col-span-9 space-y-8">
+           <section id="generate" className="border border-gray-800 rounded p-6 bg-secondary">
+             <h2 className="text-lg font-semibold text-white mb-2">
                 Generate RSA Key Pair
               </h2>
-              <p className="text-gray-600 text-sm mb-6">
+             <p className="text-gray-400 text-sm mb-6">
                 Generate a cryptographic key pair for secure encryption and decryption
               </p>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="userInput" className="text-sm text-gray-800">Biometric Input</Label>
+                  <Label htmlFor="userInput" className="text-sm text-gray-200">Biometric Input</Label>
                   <Input
                     id="userInput"
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
                     placeholder="Enter your biometric data or seed phrase"
-                    className="border-gray-300"
+                    className="border-gray-800 bg-black text-white placeholder:text-gray-500"
                   />
                 </div>
                 <Button
                   onClick={handleGenerateKeys}
                   disabled={loading === 'generating'}
-                  className="w-full bg-black text-white hover:bg-gray-800"
+                  className="w-full bg-white text-black hover:bg-gray-200"
                 >
                   {loading === 'generating' ? 'Generating...' : 'Generate Keys'}
                 </Button>
@@ -201,12 +202,12 @@ export default function Dashboard() {
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label className="text-sm text-gray-800">Public Key</Label>
+                        <Label className="text-sm text-gray-200">Public Key</Label>
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => copyToClipboard(keys.public)}
-                          className="text-xs border-gray-300 hover:bg-gray-50"
+                          className="text-xs border-gray-800 hover:bg-gray-900"
                         >
                           Copy
                         </Button>
@@ -215,17 +216,17 @@ export default function Dashboard() {
                         value={keys.public}
                         readOnly
                         rows={6}
-                        className="font-mono text-xs border-gray-300 bg-gray-50"
+                        className="font-mono text-xs border-gray-800 bg-black text-gray-200"
                       />
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label className="text-sm text-gray-800">Private Key</Label>
+                        <Label className="text-sm text-gray-200">Private Key</Label>
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => copyToClipboard(keys.private)}
-                          className="text-xs border-gray-300 hover:bg-gray-50"
+                          className="text-xs border-gray-800 hover:bg-gray-900"
                         >
                           Copy
                         </Button>
@@ -234,60 +235,60 @@ export default function Dashboard() {
                         value={keys.private}
                         readOnly
                         rows={6}
-                        className="font-mono text-xs border-gray-300 bg-gray-50"
+                        className="font-mono text-xs border-gray-800 bg-black text-gray-200"
                       />
                     </div>
                   </div>
                 )}
               </div>
-            </div>
+            </section>
 
-            <div className="border border-gray-200 rounded p-6">
-              <h2 className="text-lg font-medium text-black mb-2">
+           <section id="encrypt" className="border border-gray-800 rounded p-6 bg-secondary">
+             <h2 className="text-lg font-semibold text-white mb-2">
                 Encrypt Message
               </h2>
-              <p className="text-gray-600 text-sm mb-6">
+             <p className="text-gray-400 text-sm mb-6">
                 Encrypt a text message using the recipient's public key
               </p>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="encryptPublicKey" className="text-sm text-gray-800">Recipient's Public Key</Label>
+                  <Label htmlFor="encryptPublicKey" className="text-sm text-gray-200">Recipient's Public Key</Label>
                   <Textarea
                     id="encryptPublicKey"
                     value={encryptPublicKey}
                     onChange={(e) => setEncryptPublicKey(e.target.value)}
                     placeholder="Enter the recipient's public key"
                     rows={4}
-                    className="font-mono text-xs border-gray-300"
+                    className="font-mono text-xs border-gray-800 bg-black text-gray-200 placeholder:text-gray-500"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="messageToEncrypt" className="text-sm text-gray-800">Message to Encrypt</Label>
+                  <Label htmlFor="messageToEncrypt" className="text-sm text-gray-200">Message to Encrypt</Label>
                   <Textarea
                     id="messageToEncrypt"
                     value={messageToEncrypt}
                     onChange={(e) => setMessageToEncrypt(e.target.value)}
                     placeholder="Enter your message"
                     rows={3}
-                    className="border-gray-300"
+                    className="border-gray-800 bg-black text-gray-200 placeholder:text-gray-500"
                   />
                 </div>
                 <Button
                   onClick={handleEncryptMessage}
                   disabled={loading === 'encrypting'}
-                  className="w-full bg-black text-white hover:bg-gray-800"
+                  className="w-full bg-white text-black hover:bg-gray-200"
                 >
                   {loading === 'encrypting' ? 'Encrypting...' : 'Encrypt Message'}
                 </Button>
                 {encryptedResult && (
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <Label className="text-sm text-gray-800">Encrypted Message</Label>
+                      <Label className="text-sm text-gray-200">Encrypted Message</Label>
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => copyToClipboard(encryptedResult)}
-                        className="text-xs border-gray-300 hover:bg-gray-50"
+                        className="text-xs border-gray-800 hover:bg-gray-900"
                       >
                         Copy
                       </Button>
@@ -296,59 +297,59 @@ export default function Dashboard() {
                       value={encryptedResult}
                       readOnly
                       rows={4}
-                      className="font-mono text-xs border-gray-300 bg-gray-50"
+                      className="font-mono text-xs border-gray-800 bg-black text-gray-200"
                     />
                   </div>
                 )}
               </div>
-            </div>
+            </section>
 
-            <div className="border border-gray-200 rounded p-6">
-              <h2 className="text-lg font-medium text-black mb-2">
+           <section id="decrypt" className="border border-gray-800 rounded p-6 bg-secondary">
+             <h2 className="text-lg font-semibold text-white mb-2">
                 Decrypt Message
               </h2>
-              <p className="text-gray-600 text-sm mb-6">
+             <p className="text-gray-400 text-sm mb-6">
                 Decrypt a text message using your private key
               </p>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="decryptPrivateKey" className="text-sm text-gray-800">Your Private Key</Label>
+                  <Label htmlFor="decryptPrivateKey" className="text-sm text-gray-200">Your Private Key</Label>
                   <Textarea
                     id="decryptPrivateKey"
                     value={decryptPrivateKey}
                     onChange={(e) => setDecryptPrivateKey(e.target.value)}
                     placeholder="Enter your private key"
                     rows={4}
-                    className="font-mono text-xs border-gray-300"
+                    className="font-mono text-xs border-gray-800 bg-black text-gray-200 placeholder:text-gray-500"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="decryptCiphertext" className="text-sm text-gray-800">Encrypted Message</Label>
+                  <Label htmlFor="decryptCiphertext" className="text-sm text-gray-200">Encrypted Message</Label>
                   <Textarea
                     id="decryptCiphertext"
                     value={decryptCiphertext}
                     onChange={(e) => setDecryptCiphertext(e.target.value)}
                     placeholder="Enter the encrypted message"
                     rows={3}
-                    className="font-mono text-xs border-gray-300"
+                    className="font-mono text-xs border-gray-800 bg-black text-gray-200 placeholder:text-gray-500"
                   />
                 </div>
                 <Button
                   onClick={handleDecryptMessage}
                   disabled={loading === 'decrypting'}
-                  className="w-full bg-black text-white hover:bg-gray-800"
+                  className="w-full bg-white text-black hover:bg-gray-200"
                 >
                   {loading === 'decrypting' ? 'Decrypting...' : 'Decrypt Message'}
                 </Button>
                 {decryptedResult && (
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <Label className="text-sm text-gray-800">Decrypted Message</Label>
+                      <Label className="text-sm text-gray-200">Decrypted Message</Label>
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => copyToClipboard(decryptedResult)}
-                        className="text-xs border-gray-300 hover:bg-gray-50"
+                        className="text-xs border-gray-800 hover:bg-gray-900"
                       >
                         Copy
                       </Button>
@@ -357,57 +358,57 @@ export default function Dashboard() {
                       value={decryptedResult}
                       readOnly
                       rows={3}
-                      className="border-gray-300 bg-gray-50"
+                      className="border-gray-800 bg-black text-gray-200"
                     />
                   </div>
                 )}
               </div>
-            </div>
+            </section>
 
-            <div className="border border-gray-200 rounded p-6">
-              <h2 className="text-lg font-medium text-black mb-2">
+           <section id="upload" className="border border-gray-800 rounded p-6 bg-secondary">
+             <h2 className="text-lg font-semibold text-white mb-2">
                 Upload & Encrypt File
               </h2>
-              <p className="text-gray-600 text-sm mb-6">
+             <p className="text-gray-400 text-sm mb-6">
                 Upload a file to IPFS and encrypt it with the recipient's public key
               </p>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="uploadPublicKey" className="text-sm text-gray-800">Recipient's Public Key</Label>
+                  <Label htmlFor="uploadPublicKey" className="text-sm text-gray-200">Recipient's Public Key</Label>
                   <Textarea
                     id="uploadPublicKey"
                     value={uploadPublicKey}
                     onChange={(e) => setUploadPublicKey(e.target.value)}
                     placeholder="Enter the recipient's public key"
                     rows={4}
-                    className="font-mono text-xs border-gray-300"
+                    className="font-mono text-xs border-gray-800 bg-black text-gray-200 placeholder:text-gray-500"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="uploadFile" className="text-sm text-gray-800">File to Upload</Label>
+                  <Label htmlFor="uploadFile" className="text-sm text-gray-200">File to Upload</Label>
                   <Input
                     id="uploadFile"
                     type="file"
                     onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
-                    className="border-gray-300"
+                    className="border-gray-800 bg-black text-white file:text-white"
                   />
                 </div>
                 <Button
                   onClick={handleUploadFile}
                   disabled={loading === 'uploading'}
-                  className="w-full bg-black text-white hover:bg-gray-800"
+                  className="w-full bg-white text-black hover:bg-gray-200"
                 >
                   {loading === 'uploading' ? 'Uploading...' : 'Upload & Encrypt'}
                 </Button>
                 {encryptedCid && (
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <Label className="text-sm text-gray-800">Encrypted CID</Label>
+                      <Label className="text-sm text-gray-200">Encrypted CID</Label>
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => copyToClipboard(encryptedCid)}
-                        className="text-xs border-gray-300 hover:bg-gray-50"
+                        className="text-xs border-gray-800 hover:bg-gray-900"
                       >
                         Copy
                       </Button>
@@ -416,52 +417,52 @@ export default function Dashboard() {
                       value={encryptedCid}
                       readOnly
                       rows={2}
-                      className="font-mono text-xs border-gray-300 bg-gray-50"
+                      className="font-mono text-xs border-gray-800 bg-black text-gray-200"
                     />
                   </div>
                 )}
               </div>
-            </div>
+            </section>
 
-            <div className="border border-gray-200 rounded p-6">
-              <h2 className="text-lg font-medium text-black mb-2">
+           <section id="download" className="border border-gray-800 rounded p-6 bg-secondary">
+             <h2 className="text-lg font-semibold text-white mb-2">
                 Decrypt & Download File
               </h2>
-              <p className="text-gray-600 text-sm mb-6">
+             <p className="text-gray-400 text-sm mb-6">
                 Decrypt and download a file from IPFS using your private key
               </p>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="downloadPrivateKey" className="text-sm text-gray-800">Your Private Key</Label>
+                  <Label htmlFor="downloadPrivateKey" className="text-sm text-gray-200">Your Private Key</Label>
                   <Textarea
                     id="downloadPrivateKey"
                     value={downloadPrivateKey}
                     onChange={(e) => setDownloadPrivateKey(e.target.value)}
                     placeholder="Enter your private key"
                     rows={4}
-                    className="font-mono text-xs border-gray-300"
+                    className="font-mono text-xs border-gray-800 bg-black text-gray-200 placeholder:text-gray-500"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="downloadCiphertext" className="text-sm text-gray-800">Encrypted CID</Label>
+                  <Label htmlFor="downloadCiphertext" className="text-sm text-gray-200">Encrypted CID</Label>
                   <Textarea
                     id="downloadCiphertext"
                     value={downloadCiphertext}
                     onChange={(e) => setDownloadCiphertext(e.target.value)}
                     placeholder="Enter the encrypted CID"
                     rows={2}
-                    className="font-mono text-xs border-gray-300"
+                    className="font-mono text-xs border-gray-800 bg-black text-gray-200 placeholder:text-gray-500"
                   />
                 </div>
                 <Button
                   onClick={handleDownloadFile}
                   disabled={loading === 'downloading'}
-                  className="w-full bg-black text-white hover:bg-gray-800"
+                  className="w-full bg-white text-black hover:bg-gray-200"
                 >
                   {loading === 'downloading' ? 'Downloading...' : 'Decrypt & Download'}
                 </Button>
               </div>
-            </div>
+            </section>
         </div>
       </div>
     </div>
