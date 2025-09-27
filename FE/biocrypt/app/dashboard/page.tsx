@@ -156,11 +156,12 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-black text-white p-8">
-      <div className="max-w-6xl mx-auto grid grid-cols-12 gap-8">
-        <aside className="col-span-12 md:col-span-3">
-          <h1 className="text-4xl tracking-tight font-black display-font mb-6">BIOCRYPT</h1>
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-center display-font font-black tracking-tight text-5xl md:text-6xl mb-10">BIOCRYPT</h1>
+        <div className="min-h-[calc(100vh-12rem)] grid grid-cols-12 gap-8 items-center">
+        <aside className="col-span-12 md:col-span-3 flex flex-col justify-center">
           <nav className="relative">
-            <ol className="space-y-3 text-sm">
+            <ol className="space-y-5 text-sm">
               <li>
                 <button onClick={() => setActive('generate')} className="group flex items-center gap-3 w-full py-3">
                   <span className={`relative h-2 w-2 rounded-full transition ${active==='generate' ? 'bg-white scale-110' : 'bg-gray-600 group-hover:bg-white'}`} />
@@ -168,28 +169,28 @@ export default function Dashboard() {
                 </button>
               </li>
               <li className="relative">
-                <div className="absolute left-[5px] top-0 bottom-0 w-px bg-gray-800" />
+                <div className="absolute left-[5px] top-[-12px] bottom-0 w-px bg-gray-800" />
                 <button onClick={() => setActive('encrypt')} className="group flex items-center gap-3 w-full py-3">
                   <span className={`relative h-2 w-2 rounded-full transition ${active==='encrypt' ? 'bg-white scale-110' : 'bg-gray-600 group-hover:bg-white'}`} />
                   <span className={`text-left ${active==='encrypt' ? 'text-white' : 'text-gray-300 group-hover:text-white'}`}>Encrypt Message</span>
                 </button>
               </li>
               <li className="relative">
-                <div className="absolute left-[5px] top-0 bottom-0 w-px bg-gray-800" />
+                <div className="absolute left-[5px] top-[-12px] bottom-0 w-px bg-gray-800" />
                 <button onClick={() => setActive('decrypt')} className="group flex items-center gap-3 w-full py-3">
                   <span className={`relative h-2 w-2 rounded-full transition ${active==='decrypt' ? 'bg-white scale-110' : 'bg-gray-600 group-hover:bg-white'}`} />
                   <span className={`text-left ${active==='decrypt' ? 'text-white' : 'text-gray-300 group-hover:text-white'}`}>Decrypt Message</span>
                 </button>
               </li>
               <li className="relative">
-                <div className="absolute left-[5px] top-0 bottom-0 w-px bg-gray-800" />
+                <div className="absolute left-[5px] top-[-12px] bottom-0 w-px bg-gray-800" />
                 <button onClick={() => setActive('upload')} className="group flex items-center gap-3 w-full py-3">
                   <span className={`relative h-2 w-2 rounded-full transition ${active==='upload' ? 'bg-white scale-110' : 'bg-gray-600 group-hover:bg-white'}`} />
                   <span className={`text-left ${active==='upload' ? 'text-white' : 'text-gray-300 group-hover:text-white'}`}>Upload & Encrypt</span>
                 </button>
               </li>
               <li className="relative">
-                <div className="absolute left-[5px] top-0 bottom-0 w-px bg-gray-800" />
+                <div className="absolute left-[5px] top-[-12px] bottom-0 w-px bg-gray-800" />
                 <button onClick={() => setActive('download')} className="group flex items-center gap-3 w-full py-3">
                   <span className={`relative h-2 w-2 rounded-full transition ${active==='download' ? 'bg-white scale-110' : 'bg-gray-600 group-hover:bg-white'}`} />
                   <span className={`text-left ${active==='download' ? 'text-white' : 'text-gray-300 group-hover:text-white'}`}>Decrypt & Download</span>
@@ -206,7 +207,7 @@ export default function Dashboard() {
 
         <div className="col-span-12 md:col-span-9 space-y-8">
            {active==='generate' && (
-           <section id="generate" className="border border-gray-800 rounded p-6 bg-secondary max-w-2xl mx-auto flex flex-col">
+           <section id="generate" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Generate RSA Key Pair
               </h2>
@@ -280,7 +281,7 @@ export default function Dashboard() {
            )}
 
            {active==='encrypt' && (
-           <section id="encrypt" className="border border-gray-800 rounded p-6 bg-secondary max-w-2xl mx-auto flex flex-col">
+           <section id="encrypt" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Encrypt Message
               </h2>
@@ -345,7 +346,7 @@ export default function Dashboard() {
            )}
 
            {active==='decrypt' && (
-           <section id="decrypt" className="border border-gray-800 rounded p-6 bg-secondary max-w-2xl mx-auto flex flex-col">
+           <section id="decrypt" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Decrypt Message
               </h2>
@@ -410,7 +411,7 @@ export default function Dashboard() {
            )}
 
            {active==='upload' && (
-           <section id="upload" className="border border-gray-800 rounded p-6 bg-secondary max-w-2xl mx-auto flex flex-col">
+           <section id="upload" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Upload & Encrypt File
               </h2>
@@ -473,7 +474,7 @@ export default function Dashboard() {
            )}
 
            {active==='download' && (
-           <section id="download" className="border border-gray-800 rounded p-6 bg-secondary max-w-2xl mx-auto flex flex-col">
+           <section id="download" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Decrypt & Download File
               </h2>
@@ -518,5 +519,6 @@ export default function Dashboard() {
         </div>
       </div>
     </div>
+  </div>
   )
 }
