@@ -157,13 +157,44 @@ export default function Dashboard() {
     <div className="min-h-screen bg-black text-white p-8">
       <div className="max-w-6xl mx-auto grid grid-cols-12 gap-8">
         <aside className="col-span-12 md:col-span-3">
-          <h1 className="text-3xl font-semibold mb-6">BioCrypt</h1>
-          <nav className="space-y-1 text-sm">
-            <a href="#generate" className="block px-3 py-2 rounded border border-transparent hover:border-gray-700">Generate Keys</a>
-            <a href="#encrypt" className="block px-3 py-2 rounded border border-transparent hover:border-gray-700">Encrypt Message</a>
-            <a href="#decrypt" className="block px-3 py-2 rounded border border-transparent hover:border-gray-700">Decrypt Message</a>
-            <a href="#upload" className="block px-3 py-2 rounded border border-transparent hover:border-gray-700">Upload & Encrypt</a>
-            <a href="#download" className="block px-3 py-2 rounded border border-transparent hover:border-gray-700">Decrypt & Download</a>
+          <h1 className="text-4xl tracking-tight font-black display-font mb-6">BIOCRYPT</h1>
+          <nav className="relative">
+            <ol className="space-y-4 text-sm">
+              <li>
+                <a href="#generate" className="group flex items-center gap-3">
+                  <span className="relative h-2 w-2 rounded-full bg-white group-hover:scale-110 transition" />
+                  <span className="text-gray-300 group-hover:text-white">Generate Keys</span>
+                </a>
+              </li>
+              <li className="relative">
+                <div className="absolute left-[5px] top-0 bottom-0 w-px bg-gray-800" />
+                <a href="#encrypt" className="group flex items-center gap-3">
+                  <span className="relative h-2 w-2 rounded-full bg-white group-hover:scale-110 transition" />
+                  <span className="text-gray-300 group-hover:text-white">Encrypt Message</span>
+                </a>
+              </li>
+              <li className="relative">
+                <div className="absolute left-[5px] top-0 bottom-0 w-px bg-gray-800" />
+                <a href="#decrypt" className="group flex items-center gap-3">
+                  <span className="relative h-2 w-2 rounded-full bg-white group-hover:scale-110 transition" />
+                  <span className="text-gray-300 group-hover:text-white">Decrypt Message</span>
+                </a>
+              </li>
+              <li className="relative">
+                <div className="absolute left-[5px] top-0 bottom-0 w-px bg-gray-800" />
+                <a href="#upload" className="group flex items-center gap-3">
+                  <span className="relative h-2 w-2 rounded-full bg-white group-hover:scale-110 transition" />
+                  <span className="text-gray-300 group-hover:text-white">Upload & Encrypt</span>
+                </a>
+              </li>
+              <li className="relative">
+                <div className="absolute left-[5px] top-0 bottom-0 w-px bg-gray-800" />
+                <a href="#download" className="group flex items-center gap-3">
+                  <span className="relative h-2 w-2 rounded-full bg-white group-hover:scale-110 transition" />
+                  <span className="text-gray-300 group-hover:text-white">Decrypt & Download</span>
+                </a>
+              </li>
+            </ol>
           </nav>
           {alert && (
             <div className="mt-6 text-xs border border-gray-800 rounded p-3 text-gray-200">

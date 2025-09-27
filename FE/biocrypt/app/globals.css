@@ -51,3 +51,7 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans, Arial, Helvetica, sans-serif);
 }
+
+.display-font {
+  font-family: var(--font-display, var(--font-sans));
+}
