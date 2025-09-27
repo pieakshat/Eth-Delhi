@@ -2,7 +2,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+// Stacked layout (no tabs)
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -171,26 +171,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        <Tabs defaultValue="generate" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 bg-gray-100 p-1">
-            <TabsTrigger value="generate" className="text-sm">
-              Generate Keys
-            </TabsTrigger>
-            <TabsTrigger value="encrypt" className="text-sm">
-              Encrypt Message
-            </TabsTrigger>
-            <TabsTrigger value="decrypt" className="text-sm">
-              Decrypt Message
-            </TabsTrigger>
-            <TabsTrigger value="upload" className="text-sm">
-              Upload & Encrypt
-            </TabsTrigger>
-            <TabsTrigger value="download" className="text-sm">
-              Decrypt & Download
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="generate">
+        <div className="space-y-8">
             <div className="border border-gray-200 rounded p-6">
               <h2 className="text-lg font-medium text-black mb-2">
                 Generate RSA Key Pair
@@ -260,9 +241,7 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
-          </TabsContent>
 
-          <TabsContent value="encrypt">
             <div className="border border-gray-200 rounded p-6">
               <h2 className="text-lg font-medium text-black mb-2">
                 Encrypt Message
@@ -323,9 +302,7 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
-          </TabsContent>
 
-          <TabsContent value="decrypt">
             <div className="border border-gray-200 rounded p-6">
               <h2 className="text-lg font-medium text-black mb-2">
                 Decrypt Message
@@ -386,9 +363,7 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
-          </TabsContent>
 
-          <TabsContent value="upload">
             <div className="border border-gray-200 rounded p-6">
               <h2 className="text-lg font-medium text-black mb-2">
                 Upload & Encrypt File
@@ -447,9 +422,7 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
-          </TabsContent>
 
-          <TabsContent value="download">
             <div className="border border-gray-200 rounded p-6">
               <h2 className="text-lg font-medium text-black mb-2">
                 Decrypt & Download File
@@ -489,8 +462,7 @@ export default function Dashboard() {
                 </Button>
               </div>
             </div>
-          </TabsContent>
-        </Tabs>
+        </div>
       </div>
     </div>
   )
