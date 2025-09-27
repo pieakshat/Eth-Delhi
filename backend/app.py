@@ -20,7 +20,7 @@ def generate_keys():
     print(success)
     if success: 
         print("sending for generation")
-        public_key, private_key = generate_rsa_keypair(user_input)
+        public_key, private_key = generate_rsa_keypair('kjkszpj')
         print("done with generation")
         public_pem, private_pem = keys_to_pem(public_key, private_key)
     else: 
@@ -81,7 +81,9 @@ def upload_and_encrypt():
             return jsonify({'error': 'No file selected'}), 400
 
         # Pass the file object and public key to the `add_file_to_ipfs` function
+        print("Herereeee")
         encrypted_cid = add_file_to_ipfs(file, public_pem)
+        print("encrypted_cid: ", encrypted_cid)
         
         return jsonify({'encrypted_cid': encrypted_cid})
     except Exception as e:
@@ -92,29 +94,37 @@ def decrypt_and_download():
     print("Starting the process")
     try: 
         # private_pem = request.json['private_pem']
-        ciphertext = request.json['ciphertext']
+        ciphertext_hex = request.json.get('ciphertext')
+
+        if not ciphertext_hex:
+            return jsonify({'error': 'ciphertext is required'}), 400
+
+        
         
         if fingerprint_scan(): 
             print("sending for generation")
-            public_key, private_key = generate_rsa_keypair('kjkszpj')
+            ciphertext = bytes.fromhex(ciphertext_hex)
+            # hardcoding right now because can't fetch the raw data of a fingerrint from the native scanner
+            public_key, private_key = generate_rsa_keypair('kjkszpj') 
             print("done with generation")
             public_pem, private_pem = keys_to_pem(public_key, private_key)
             
 
-            print("sending for decryption...")
-            # decrypted_cid = decrypt_message(private_pem, ciphertext)
-            # print("Decrypted CID:", decrypted_cid)
-
-        # Fetch the file as a binary stream
-            file_stream, mime_type = get_file_from_ipfs(ciphertext, private_pem)
+            # Fetch the file as a binary stream using the encrypted CID
+            file_stream, mime_type = get_file_from_ipfs(ciphertext_hex, private_pem)
+            print("file_stream: ", file_stream)
+            print("mime_type: ", mime_type)
         
-        # Return the file as a downloadable response
+            # Return the file as a downloadable response
             return send_file(
                 file_stream,
                 as_attachment=True,
-                download_name="retrived_file",
+                download_name="retrieved_file",
                 mimetype=mime_type
             )
+        else:
+            return jsonify({'error': 'Fingerprint authentication failed'}), 403
+            
     except Exception as e: 
         print(f"Error during decryption and download: {str(e)}")
         return jsonify({'error': str(e)}), 500

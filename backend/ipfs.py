@@ -13,10 +13,14 @@ from rsa import (
 )
 
 def _get_lighthouse_client():
+    print("Getting token")
     token = os.environ.get("LIGHTHOUSE_TOKEN")
     if not token:
         raise RuntimeError("LIGHTHOUSE_TOKEN env var is missing")
-    return Lighthouse(token=token)
+    print("Token: ", token)
+    lh = Lighthouse(token=token)
+    print(lh)
+    return lh
 
 def _extract_cid(upload_response: dict) -> str:
     if not upload_response:
@@ -59,22 +63,25 @@ def _persist_in_tempfile(file_like, filename_hint: str | None = None) -> str:
 
 
 def add_file_to_ipfs(file, public_pem: str) -> str:
-
+    print("Getting client")
     lh = _get_lighthouse_client()
-
+    print("lh: ", lh)
     
     filename_hint = getattr(file, "filename", None)
+    print("filename_hint: ", filename_hint)
 
-    
     temp_path = _persist_in_tempfile(file, filename_hint=filename_hint)
-
+    print("temp_path: ", temp_path)
     try:
+        print("uploading to lighthouse")
         # 2) Upload via Lighthouse SDK (expects a path)
         upload_resp = lh.upload(temp_path)  # returns dict with cid/hash
+        print("upload_resp: ", upload_resp)
         cid = _extract_cid(upload_resp)
-
+        print("cid: ", cid) 
         # 3) Encrypt and return encrypted CID
         encrypted_cid = encrypt_message(public_pem, cid)
+        print("encrypted_cid: ", encrypted_cid)
         return encrypted_cid
     except Exception as e:
         raise RuntimeError(f"Lighthouse upload failed: {e}") from e
@@ -86,41 +93,57 @@ def add_file_to_ipfs(file, public_pem: str) -> str:
             pass
 
 
-def get_file_from_ipfs(encrypted_cid: str, private_pem: str) -> tuple[io.BytesIO, str]:
+def get_file_from_ipfs(encrypted_cid_hex: str, private_pem: str) -> tuple[io.BytesIO, str]:
 
+    print("Getting file from IPFS")
+    # 1) Decrypt the CID first
+    cid = decrypt_message(private_pem, encrypted_cid_hex)
+    print("cid: ", cid)
     
-    cid = decrypt_message(private_pem, encrypted_cid)
-
-    # 2) Fetch via public gateway
-    gateway_url = f"https://gateway.lighthouse.storage/ipfs/{cid}"
+    if not cid:
+        raise RuntimeError("Failed to decrypt CID")
 
     try:
-        with requests.get(gateway_url, stream=True, timeout=60) as resp:
-            if resp.status_code != 200:
-                detail = resp.text[:200] if resp.text else ""
-                raise RuntimeError(
-                    f"Failed to fetch file. Status {resp.status_code}. {detail}"
-                )
+        # 2) Get Lighthouse client
+        lh = _get_lighthouse_client()
+        
+        # 3) Download file using Lighthouse SDK
+        print(f"Downloading file with CID: {cid}")
+        file_info = lh.download(cid)  # Returns tuple (file_content, metadata)
+        
+        if not file_info or len(file_info) < 1:
+            raise RuntimeError("Failed to download file from Lighthouse")
+        
+        file_content = file_info[0]  # Get the file content
+        print(f"Downloaded file size: {len(file_content)} bytes")
+        
+        # 4) Create BytesIO buffer from the downloaded content
+        buf = io.BytesIO(file_content)
+        buf.seek(0)
+        
+        # 5) Try to determine MIME type
+        mime_type = "application/octet-stream"  # Default
+        
+        # If metadata is available in the tuple, try to extract MIME type
+        if len(file_info) > 1 and isinstance(file_info[1], dict):
+            metadata = file_info[1]
+            mime_type = metadata.get("content_type") or metadata.get("mimetype") or mime_type
+        
+        # Fallback: guess MIME type from content (basic detection)
+        if mime_type == "application/octet-stream":
+            # Check for common file signatures
+            file_content_start = file_content[:10] if len(file_content) >= 10 else file_content
+            if file_content_start.startswith(b'\xFF\xD8\xFF'):
+                mime_type = "image/jpeg"
+            elif file_content_start.startswith(b'\x89PNG'):
+                mime_type = "image/png"
+            elif file_content_start.startswith(b'%PDF'):
+                mime_type = "application/pdf"
+            elif file_content_start.startswith(b'PK'):
+                mime_type = "application/zip"
+        
+        return buf, mime_type
 
-            # 3) Stream into memory buffer
-            buf = io.BytesIO()
-            for chunk in resp.iter_content(chunk_size=8192):
-                if chunk:
-                    buf.write(chunk)
-            buf.seek(0)
-
-            
-            
-            mime_type = resp.headers.get("Content-Type")
-            if not mime_type or ";" in mime_type:
-                
-                guessed, _ = mimetypes.guess_type("")  # will be None
-                mime_type = (guessed or (mime_type.split(";")[0] if mime_type else None)
-                             or "application/octet-stream")
-
-            return buf, mime_type
-
-    except requests.RequestException as e:
-        raise RuntimeError(f"Network error while retrieving file: {e}") from e
     except Exception as e:
-        raise
+        print(f"Error downloading from Lighthouse: {e}")
+        raise RuntimeError(f"Failed to download file from IPFS: {e}") from e

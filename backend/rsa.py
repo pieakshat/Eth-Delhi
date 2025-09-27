@@ -70,8 +70,8 @@ def decrypt_message(private_pem, encrypted_message_hex):
         plaintext = cipher.decrypt(ciphertext)
         return plaintext.decode('utf-8')
     except Exception as e: 
-        print(e)
-
+        print(f"Decryption error: {e}")
+        return None
 def test_deterministic_key_generation():
     # Input to generate the key pair
     fingerprint_hash = "test_fingerprint"
