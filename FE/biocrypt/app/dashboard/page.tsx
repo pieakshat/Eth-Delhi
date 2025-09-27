@@ -1,14 +1,12 @@
+
 'use client'
 
 import { useState } from 'react'
-import { Key, MessageCircle, Upload, Download, Shield } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import {
   generateKeys,
   encryptMessage,
@@ -156,77 +154,65 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Shield className="h-8 w-8 text-blue-600" />
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              BioCrypt
-            </h1>
-          </div>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+    <div className="min-h-screen bg-white p-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-medium text-black mb-3">
+            BioCrypt
+          </h1>
+          <p className="text-gray-600 text-sm max-w-lg mx-auto">
             Secure file sharing with biometric encryption using IPFS and RSA cryptography
           </p>
         </div>
 
         {alert && (
-          <Alert className={`mb-6 ${alert.type === 'error' ? 'border-red-200 bg-red-50' : 'border-green-200 bg-green-50'}`}>
-            <AlertDescription className={alert.type === 'error' ? 'text-red-800' : 'text-green-800'}>
-              {alert.message}
-            </AlertDescription>
-          </Alert>
+          <div className={`mb-6 p-3 rounded border text-sm ${alert.type === 'error' ? 'border-gray-300 bg-gray-50 text-gray-800' : 'border-gray-300 bg-gray-50 text-gray-800'}`}>
+            {alert.message}
+          </div>
         )}
 
-        <Tabs defaultValue="generate" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-5 bg-white/50 backdrop-blur-sm">
-            <TabsTrigger value="generate" className="flex items-center gap-2">
-              <Key className="h-4 w-4" />
+        <Tabs defaultValue="generate" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-5 bg-gray-100 p-1">
+            <TabsTrigger value="generate" className="text-sm">
               Generate Keys
             </TabsTrigger>
-            <TabsTrigger value="encrypt" className="flex items-center gap-2">
-              <MessageCircle className="h-4 w-4" />
+            <TabsTrigger value="encrypt" className="text-sm">
               Encrypt Message
             </TabsTrigger>
-            <TabsTrigger value="decrypt" className="flex items-center gap-2">
-              <MessageCircle className="h-4 w-4" />
+            <TabsTrigger value="decrypt" className="text-sm">
               Decrypt Message
             </TabsTrigger>
-            <TabsTrigger value="upload" className="flex items-center gap-2">
-              <Upload className="h-4 w-4" />
+            <TabsTrigger value="upload" className="text-sm">
               Upload & Encrypt
             </TabsTrigger>
-            <TabsTrigger value="download" className="flex items-center gap-2">
-              <Download className="h-4 w-4" />
+            <TabsTrigger value="download" className="text-sm">
               Decrypt & Download
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="generate">
-            <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Key className="h-5 w-5" />
-                  Generate RSA Key Pair
-                </CardTitle>
-                <CardDescription>
-                  Generate a cryptographic key pair for secure encryption and decryption
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
+            <div className="border border-gray-200 rounded p-6">
+              <h2 className="text-lg font-medium text-black mb-2">
+                Generate RSA Key Pair
+              </h2>
+              <p className="text-gray-600 text-sm mb-6">
+                Generate a cryptographic key pair for secure encryption and decryption
+              </p>
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="userInput">Biometric Input</Label>
+                  <Label htmlFor="userInput" className="text-sm text-gray-800">Biometric Input</Label>
                   <Input
                     id="userInput"
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
                     placeholder="Enter your biometric data or seed phrase"
+                    className="border-gray-300"
                   />
                 </div>
                 <Button
                   onClick={handleGenerateKeys}
                   disabled={loading === 'generating'}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600"
+                  className="w-full bg-black text-white hover:bg-gray-800"
                 >
                   {loading === 'generating' ? 'Generating...' : 'Generate Keys'}
                 </Button>
@@ -234,11 +220,12 @@ export default function Dashboard() {
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label>Public Key</Label>
+                        <Label className="text-sm text-gray-800">Public Key</Label>
                         <Button
-                          variant="ghost"
+                          variant="outline"
                           size="sm"
                           onClick={() => copyToClipboard(keys.public)}
+                          className="text-xs border-gray-300 hover:bg-gray-50"
                         >
                           Copy
                         </Button>
@@ -247,16 +234,17 @@ export default function Dashboard() {
                         value={keys.public}
                         readOnly
                         rows={6}
-                        className="font-mono text-xs"
+                        className="font-mono text-xs border-gray-300 bg-gray-50"
                       />
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label>Private Key</Label>
+                        <Label className="text-sm text-gray-800">Private Key</Label>
                         <Button
-                          variant="ghost"
+                          variant="outline"
                           size="sm"
                           onClick={() => copyToClipboard(keys.private)}
+                          className="text-xs border-gray-300 hover:bg-gray-50"
                         >
                           Copy
                         </Button>
@@ -265,63 +253,62 @@ export default function Dashboard() {
                         value={keys.private}
                         readOnly
                         rows={6}
-                        className="font-mono text-xs"
+                        className="font-mono text-xs border-gray-300 bg-gray-50"
                       />
                     </div>
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="encrypt">
-            <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageCircle className="h-5 w-5" />
-                  Encrypt Message
-                </CardTitle>
-                <CardDescription>
-                  Encrypt a text message using the recipient's public key
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
+            <div className="border border-gray-200 rounded p-6">
+              <h2 className="text-lg font-medium text-black mb-2">
+                Encrypt Message
+              </h2>
+              <p className="text-gray-600 text-sm mb-6">
+                Encrypt a text message using the recipient's public key
+              </p>
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="encryptPublicKey">Recipient's Public Key</Label>
+                  <Label htmlFor="encryptPublicKey" className="text-sm text-gray-800">Recipient's Public Key</Label>
                   <Textarea
                     id="encryptPublicKey"
                     value={encryptPublicKey}
                     onChange={(e) => setEncryptPublicKey(e.target.value)}
                     placeholder="Enter the recipient's public key"
                     rows={4}
-                    className="font-mono text-xs"
+                    className="font-mono text-xs border-gray-300"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="messageToEncrypt">Message to Encrypt</Label>
+                  <Label htmlFor="messageToEncrypt" className="text-sm text-gray-800">Message to Encrypt</Label>
                   <Textarea
                     id="messageToEncrypt"
                     value={messageToEncrypt}
                     onChange={(e) => setMessageToEncrypt(e.target.value)}
                     placeholder="Enter your message"
                     rows={3}
+                    className="border-gray-300"
                   />
                 </div>
                 <Button
                   onClick={handleEncryptMessage}
                   disabled={loading === 'encrypting'}
-                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600"
+                  className="w-full bg-black text-white hover:bg-gray-800"
                 >
                   {loading === 'encrypting' ? 'Encrypting...' : 'Encrypt Message'}
                 </Button>
                 {encryptedResult && (
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <Label>Encrypted Message</Label>
+                      <Label className="text-sm text-gray-800">Encrypted Message</Label>
                       <Button
-                        variant="ghost"
+                        variant="outline"
                         size="sm"
                         onClick={() => copyToClipboard(encryptedResult)}
+                        className="text-xs border-gray-300 hover:bg-gray-50"
                       >
                         Copy
                       </Button>
@@ -330,63 +317,61 @@ export default function Dashboard() {
                       value={encryptedResult}
                       readOnly
                       rows={4}
-                      className="font-mono text-xs"
+                      className="font-mono text-xs border-gray-300 bg-gray-50"
                     />
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="decrypt">
-            <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageCircle className="h-5 w-5" />
-                  Decrypt Message
-                </CardTitle>
-                <CardDescription>
-                  Decrypt a text message using your private key
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
+            <div className="border border-gray-200 rounded p-6">
+              <h2 className="text-lg font-medium text-black mb-2">
+                Decrypt Message
+              </h2>
+              <p className="text-gray-600 text-sm mb-6">
+                Decrypt a text message using your private key
+              </p>
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="decryptPrivateKey">Your Private Key</Label>
+                  <Label htmlFor="decryptPrivateKey" className="text-sm text-gray-800">Your Private Key</Label>
                   <Textarea
                     id="decryptPrivateKey"
                     value={decryptPrivateKey}
                     onChange={(e) => setDecryptPrivateKey(e.target.value)}
                     placeholder="Enter your private key"
                     rows={4}
-                    className="font-mono text-xs"
+                    className="font-mono text-xs border-gray-300"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="decryptCiphertext">Encrypted Message</Label>
+                  <Label htmlFor="decryptCiphertext" className="text-sm text-gray-800">Encrypted Message</Label>
                   <Textarea
                     id="decryptCiphertext"
                     value={decryptCiphertext}
                     onChange={(e) => setDecryptCiphertext(e.target.value)}
                     placeholder="Enter the encrypted message"
                     rows={3}
-                    className="font-mono text-xs"
+                    className="font-mono text-xs border-gray-300"
                   />
                 </div>
                 <Button
                   onClick={handleDecryptMessage}
                   disabled={loading === 'decrypting'}
-                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600"
+                  className="w-full bg-black text-white hover:bg-gray-800"
                 >
                   {loading === 'decrypting' ? 'Decrypting...' : 'Decrypt Message'}
                 </Button>
                 {decryptedResult && (
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <Label>Decrypted Message</Label>
+                      <Label className="text-sm text-gray-800">Decrypted Message</Label>
                       <Button
-                        variant="ghost"
+                        variant="outline"
                         size="sm"
                         onClick={() => copyToClipboard(decryptedResult)}
+                        className="text-xs border-gray-300 hover:bg-gray-50"
                       >
                         Copy
                       </Button>
@@ -395,60 +380,59 @@ export default function Dashboard() {
                       value={decryptedResult}
                       readOnly
                       rows={3}
-                      className="bg-green-50"
+                      className="border-gray-300 bg-gray-50"
                     />
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="upload">
-            <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Upload className="h-5 w-5" />
-                  Upload & Encrypt File
-                </CardTitle>
-                <CardDescription>
-                  Upload a file to IPFS and encrypt it with the recipient's public key
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
+            <div className="border border-gray-200 rounded p-6">
+              <h2 className="text-lg font-medium text-black mb-2">
+                Upload & Encrypt File
+              </h2>
+              <p className="text-gray-600 text-sm mb-6">
+                Upload a file to IPFS and encrypt it with the recipient's public key
+              </p>
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="uploadPublicKey">Recipient's Public Key</Label>
+                  <Label htmlFor="uploadPublicKey" className="text-sm text-gray-800">Recipient's Public Key</Label>
                   <Textarea
                     id="uploadPublicKey"
                     value={uploadPublicKey}
                     onChange={(e) => setUploadPublicKey(e.target.value)}
                     placeholder="Enter the recipient's public key"
                     rows={4}
-                    className="font-mono text-xs"
+                    className="font-mono text-xs border-gray-300"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="uploadFile">File to Upload</Label>
+                  <Label htmlFor="uploadFile" className="text-sm text-gray-800">File to Upload</Label>
                   <Input
                     id="uploadFile"
                     type="file"
                     onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
+                    className="border-gray-300"
                   />
                 </div>
                 <Button
                   onClick={handleUploadFile}
                   disabled={loading === 'uploading'}
-                  className="w-full bg-gradient-to-r from-orange-600 to-red-600"
+                  className="w-full bg-black text-white hover:bg-gray-800"
                 >
                   {loading === 'uploading' ? 'Uploading...' : 'Upload & Encrypt'}
                 </Button>
                 {encryptedCid && (
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <Label>Encrypted CID</Label>
+                      <Label className="text-sm text-gray-800">Encrypted CID</Label>
                       <Button
-                        variant="ghost"
+                        variant="outline"
                         size="sm"
                         onClick={() => copyToClipboard(encryptedCid)}
+                        className="text-xs border-gray-300 hover:bg-gray-50"
                       >
                         Copy
                       </Button>
@@ -457,57 +441,54 @@ export default function Dashboard() {
                       value={encryptedCid}
                       readOnly
                       rows={2}
-                      className="font-mono text-xs bg-orange-50"
+                      className="font-mono text-xs border-gray-300 bg-gray-50"
                     />
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="download">
-            <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Download className="h-5 w-5" />
-                  Decrypt & Download File
-                </CardTitle>
-                <CardDescription>
-                  Decrypt and download a file from IPFS using your private key
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
+            <div className="border border-gray-200 rounded p-6">
+              <h2 className="text-lg font-medium text-black mb-2">
+                Decrypt & Download File
+              </h2>
+              <p className="text-gray-600 text-sm mb-6">
+                Decrypt and download a file from IPFS using your private key
+              </p>
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="downloadPrivateKey">Your Private Key</Label>
+                  <Label htmlFor="downloadPrivateKey" className="text-sm text-gray-800">Your Private Key</Label>
                   <Textarea
                     id="downloadPrivateKey"
                     value={downloadPrivateKey}
                     onChange={(e) => setDownloadPrivateKey(e.target.value)}
                     placeholder="Enter your private key"
                     rows={4}
-                    className="font-mono text-xs"
+                    className="font-mono text-xs border-gray-300"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="downloadCiphertext">Encrypted CID</Label>
+                  <Label htmlFor="downloadCiphertext" className="text-sm text-gray-800">Encrypted CID</Label>
                   <Textarea
                     id="downloadCiphertext"
                     value={downloadCiphertext}
                     onChange={(e) => setDownloadCiphertext(e.target.value)}
                     placeholder="Enter the encrypted CID"
                     rows={2}
-                    className="font-mono text-xs"
+                    className="font-mono text-xs border-gray-300"
                   />
                 </div>
                 <Button
                   onClick={handleDownloadFile}
                   disabled={loading === 'downloading'}
-                  className="w-full bg-gradient-to-r from-teal-600 to-cyan-600"
+                  className="w-full bg-black text-white hover:bg-gray-800"
                 >
                   {loading === 'downloading' ? 'Downloading...' : 'Decrypt & Download'}
                 </Button>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
