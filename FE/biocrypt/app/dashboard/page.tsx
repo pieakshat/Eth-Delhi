@@ -160,7 +160,7 @@ export default function Dashboard() {
         <h1 className="text-center display-font font-black tracking-tight text-5xl md:text-6xl mb-10">BIOCRYPT</h1>
         <div className="min-h-[calc(100vh-12rem)] grid grid-cols-12 gap-8 items-center">
         <aside className="col-span-12 md:col-span-3 flex flex-col justify-center">
-          <nav className="relative">
+          <nav className="relative mx-auto w-[240px]">
             <ol className="space-y-5 text-sm">
               <li>
                 <button onClick={() => setActive('generate')} className="group flex items-center gap-3 w-full py-3">
@@ -205,9 +205,9 @@ export default function Dashboard() {
           )}
         </aside>
 
-        <div className="col-span-12 md:col-span-9 space-y-8">
+        <div className="col-span-12 md:col-span-9 flex items-center justify-center">
            {active==='generate' && (
-           <section id="generate" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] mx-auto flex flex-col">
+           <section id="generate" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] min-h-[420px] mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Generate RSA Key Pair
               </h2>
@@ -281,7 +281,7 @@ export default function Dashboard() {
            )}
 
            {active==='encrypt' && (
-           <section id="encrypt" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] mx-auto flex flex-col">
+           <section id="encrypt" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] min-h-[420px] mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Encrypt Message
               </h2>
@@ -346,7 +346,7 @@ export default function Dashboard() {
            )}
 
            {active==='decrypt' && (
-           <section id="decrypt" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] mx-auto flex flex-col">
+           <section id="decrypt" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] min-h-[420px] mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Decrypt Message
               </h2>
@@ -411,7 +411,7 @@ export default function Dashboard() {
            )}
 
            {active==='upload' && (
-           <section id="upload" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] mx-auto flex flex-col">
+           <section id="upload" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] min-h-[420px] mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Upload & Encrypt File
               </h2>
@@ -474,7 +474,7 @@ export default function Dashboard() {
            )}
 
            {active==='download' && (
-           <section id="download" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] mx-auto flex flex-col">
+           <section id="download" className="border border-gray-800 rounded p-6 bg-secondary w-[720px] min-h-[420px] mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Decrypt & Download File
               </h2>
