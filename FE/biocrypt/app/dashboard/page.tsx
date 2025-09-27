@@ -18,6 +18,7 @@ import {
 export default function Dashboard() {
   const [loading, setLoading] = useState<string | null>(null)
   const [alert, setAlert] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
+  const [active, setActive] = useState<'generate' | 'encrypt' | 'decrypt' | 'upload' | 'download'>('generate')
 
   // Generate Keys State
   const [userInput, setUserInput] = useState('')
@@ -159,40 +160,40 @@ export default function Dashboard() {
         <aside className="col-span-12 md:col-span-3">
           <h1 className="text-4xl tracking-tight font-black display-font mb-6">BIOCRYPT</h1>
           <nav className="relative">
-            <ol className="space-y-4 text-sm">
+            <ol className="space-y-3 text-sm">
               <li>
-                <a href="#generate" className="group flex items-center gap-3">
-                  <span className="relative h-2 w-2 rounded-full bg-white group-hover:scale-110 transition" />
-                  <span className="text-gray-300 group-hover:text-white">Generate Keys</span>
-                </a>
+                <button onClick={() => setActive('generate')} className="group flex items-center gap-3 w-full py-3">
+                  <span className={`relative h-2 w-2 rounded-full transition ${active==='generate' ? 'bg-white scale-110' : 'bg-gray-600 group-hover:bg-white'}`} />
+                  <span className={`text-left ${active==='generate' ? 'text-white' : 'text-gray-300 group-hover:text-white'}`}>Generate Keys</span>
+                </button>
               </li>
               <li className="relative">
                 <div className="absolute left-[5px] top-0 bottom-0 w-px bg-gray-800" />
-                <a href="#encrypt" className="group flex items-center gap-3">
-                  <span className="relative h-2 w-2 rounded-full bg-white group-hover:scale-110 transition" />
-                  <span className="text-gray-300 group-hover:text-white">Encrypt Message</span>
-                </a>
+                <button onClick={() => setActive('encrypt')} className="group flex items-center gap-3 w-full py-3">
+                  <span className={`relative h-2 w-2 rounded-full transition ${active==='encrypt' ? 'bg-white scale-110' : 'bg-gray-600 group-hover:bg-white'}`} />
+                  <span className={`text-left ${active==='encrypt' ? 'text-white' : 'text-gray-300 group-hover:text-white'}`}>Encrypt Message</span>
+                </button>
               </li>
               <li className="relative">
                 <div className="absolute left-[5px] top-0 bottom-0 w-px bg-gray-800" />
-                <a href="#decrypt" className="group flex items-center gap-3">
-                  <span className="relative h-2 w-2 rounded-full bg-white group-hover:scale-110 transition" />
-                  <span className="text-gray-300 group-hover:text-white">Decrypt Message</span>
-                </a>
+                <button onClick={() => setActive('decrypt')} className="group flex items-center gap-3 w-full py-3">
+                  <span className={`relative h-2 w-2 rounded-full transition ${active==='decrypt' ? 'bg-white scale-110' : 'bg-gray-600 group-hover:bg-white'}`} />
+                  <span className={`text-left ${active==='decrypt' ? 'text-white' : 'text-gray-300 group-hover:text-white'}`}>Decrypt Message</span>
+                </button>
               </li>
               <li className="relative">
                 <div className="absolute left-[5px] top-0 bottom-0 w-px bg-gray-800" />
-                <a href="#upload" className="group flex items-center gap-3">
-                  <span className="relative h-2 w-2 rounded-full bg-white group-hover:scale-110 transition" />
-                  <span className="text-gray-300 group-hover:text-white">Upload & Encrypt</span>
-                </a>
+                <button onClick={() => setActive('upload')} className="group flex items-center gap-3 w-full py-3">
+                  <span className={`relative h-2 w-2 rounded-full transition ${active==='upload' ? 'bg-white scale-110' : 'bg-gray-600 group-hover:bg-white'}`} />
+                  <span className={`text-left ${active==='upload' ? 'text-white' : 'text-gray-300 group-hover:text-white'}`}>Upload & Encrypt</span>
+                </button>
               </li>
               <li className="relative">
                 <div className="absolute left-[5px] top-0 bottom-0 w-px bg-gray-800" />
-                <a href="#download" className="group flex items-center gap-3">
-                  <span className="relative h-2 w-2 rounded-full bg-white group-hover:scale-110 transition" />
-                  <span className="text-gray-300 group-hover:text-white">Decrypt & Download</span>
-                </a>
+                <button onClick={() => setActive('download')} className="group flex items-center gap-3 w-full py-3">
+                  <span className={`relative h-2 w-2 rounded-full transition ${active==='download' ? 'bg-white scale-110' : 'bg-gray-600 group-hover:bg-white'}`} />
+                  <span className={`text-left ${active==='download' ? 'text-white' : 'text-gray-300 group-hover:text-white'}`}>Decrypt & Download</span>
+                </button>
               </li>
             </ol>
           </nav>
@@ -204,14 +205,15 @@ export default function Dashboard() {
         </aside>
 
         <div className="col-span-12 md:col-span-9 space-y-8">
-           <section id="generate" className="border border-gray-800 rounded p-6 bg-secondary">
+           {active==='generate' && (
+           <section id="generate" className="border border-gray-800 rounded p-6 bg-secondary max-w-2xl mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Generate RSA Key Pair
               </h2>
              <p className="text-gray-400 text-sm mb-6">
                 Generate a cryptographic key pair for secure encryption and decryption
               </p>
-              <div className="space-y-4">
+              <div className="space-y-4 flex-1">
                 <div className="space-y-2">
                   <Label htmlFor="userInput" className="text-sm text-gray-200">Biometric Input</Label>
                   <Input
@@ -222,13 +224,6 @@ export default function Dashboard() {
                     className="border-gray-800 bg-black text-white placeholder:text-gray-500"
                   />
                 </div>
-                <Button
-                  onClick={handleGenerateKeys}
-                  disabled={loading === 'generating'}
-                  className="w-full bg-white text-black hover:bg-gray-200"
-                >
-                  {loading === 'generating' ? 'Generating...' : 'Generate Keys'}
-                </Button>
                 {keys && (
                   <div className="space-y-4">
                     <div className="space-y-2">
@@ -272,16 +267,27 @@ export default function Dashboard() {
                   </div>
                 )}
               </div>
+              <div className="pt-4 flex justify-end">
+                <Button
+                  onClick={handleGenerateKeys}
+                  disabled={loading === 'generating'}
+                  className="bg-white text-black hover:bg-gray-200 px-6"
+                >
+                  {loading === 'generating' ? 'Generating...' : 'Generate Keys'}
+                </Button>
+              </div>
             </section>
+           )}
 
-           <section id="encrypt" className="border border-gray-800 rounded p-6 bg-secondary">
+           {active==='encrypt' && (
+           <section id="encrypt" className="border border-gray-800 rounded p-6 bg-secondary max-w-2xl mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Encrypt Message
               </h2>
              <p className="text-gray-400 text-sm mb-6">
                 Encrypt a text message using the recipient's public key
               </p>
-              <div className="space-y-4">
+              <div className="space-y-4 flex-1">
                 <div className="space-y-2">
                   <Label htmlFor="encryptPublicKey" className="text-sm text-gray-200">Recipient's Public Key</Label>
                   <Textarea
@@ -304,13 +310,6 @@ export default function Dashboard() {
                     className="border-gray-800 bg-black text-gray-200 placeholder:text-gray-500"
                   />
                 </div>
-                <Button
-                  onClick={handleEncryptMessage}
-                  disabled={loading === 'encrypting'}
-                  className="w-full bg-white text-black hover:bg-gray-200"
-                >
-                  {loading === 'encrypting' ? 'Encrypting...' : 'Encrypt Message'}
-                </Button>
                 {encryptedResult && (
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
@@ -333,16 +332,27 @@ export default function Dashboard() {
                   </div>
                 )}
               </div>
+              <div className="pt-4 flex justify-end">
+                <Button
+                  onClick={handleEncryptMessage}
+                  disabled={loading === 'encrypting'}
+                  className="bg-white text-black hover:bg-gray-200 px-6"
+                >
+                  {loading === 'encrypting' ? 'Encrypting...' : 'Encrypt Message'}
+                </Button>
+              </div>
             </section>
+           )}
 
-           <section id="decrypt" className="border border-gray-800 rounded p-6 bg-secondary">
+           {active==='decrypt' && (
+           <section id="decrypt" className="border border-gray-800 rounded p-6 bg-secondary max-w-2xl mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Decrypt Message
               </h2>
              <p className="text-gray-400 text-sm mb-6">
                 Decrypt a text message using your private key
               </p>
-              <div className="space-y-4">
+              <div className="space-y-4 flex-1">
                 <div className="space-y-2">
                   <Label htmlFor="decryptPrivateKey" className="text-sm text-gray-200">Your Private Key</Label>
                   <Textarea
@@ -365,13 +375,6 @@ export default function Dashboard() {
                     className="font-mono text-xs border-gray-800 bg-black text-gray-200 placeholder:text-gray-500"
                   />
                 </div>
-                <Button
-                  onClick={handleDecryptMessage}
-                  disabled={loading === 'decrypting'}
-                  className="w-full bg-white text-black hover:bg-gray-200"
-                >
-                  {loading === 'decrypting' ? 'Decrypting...' : 'Decrypt Message'}
-                </Button>
                 {decryptedResult && (
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
@@ -394,16 +397,27 @@ export default function Dashboard() {
                   </div>
                 )}
               </div>
+              <div className="pt-4 flex justify-end">
+                <Button
+                  onClick={handleDecryptMessage}
+                  disabled={loading === 'decrypting'}
+                  className="bg-white text-black hover:bg-gray-200 px-6"
+                >
+                  {loading === 'decrypting' ? 'Decrypting...' : 'Decrypt Message'}
+                </Button>
+              </div>
             </section>
+           )}
 
-           <section id="upload" className="border border-gray-800 rounded p-6 bg-secondary">
+           {active==='upload' && (
+           <section id="upload" className="border border-gray-800 rounded p-6 bg-secondary max-w-2xl mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Upload & Encrypt File
               </h2>
              <p className="text-gray-400 text-sm mb-6">
                 Upload a file to IPFS and encrypt it with the recipient's public key
               </p>
-              <div className="space-y-4">
+              <div className="space-y-4 flex-1">
                 <div className="space-y-2">
                   <Label htmlFor="uploadPublicKey" className="text-sm text-gray-200">Recipient's Public Key</Label>
                   <Textarea
@@ -424,13 +438,6 @@ export default function Dashboard() {
                     className="border-gray-800 bg-black text-white file:text-white"
                   />
                 </div>
-                <Button
-                  onClick={handleUploadFile}
-                  disabled={loading === 'uploading'}
-                  className="w-full bg-white text-black hover:bg-gray-200"
-                >
-                  {loading === 'uploading' ? 'Uploading...' : 'Upload & Encrypt'}
-                </Button>
                 {encryptedCid && (
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
@@ -453,16 +460,27 @@ export default function Dashboard() {
                   </div>
                 )}
               </div>
+              <div className="pt-4 flex justify-end">
+                <Button
+                  onClick={handleUploadFile}
+                  disabled={loading === 'uploading'}
+                  className="bg-white text-black hover:bg-gray-200 px-6"
+                >
+                  {loading === 'uploading' ? 'Uploading...' : 'Upload & Encrypt'}
+                </Button>
+              </div>
             </section>
+           )}
 
-           <section id="download" className="border border-gray-800 rounded p-6 bg-secondary">
+           {active==='download' && (
+           <section id="download" className="border border-gray-800 rounded p-6 bg-secondary max-w-2xl mx-auto flex flex-col">
              <h2 className="text-lg font-semibold text-white mb-2">
                 Decrypt & Download File
               </h2>
              <p className="text-gray-400 text-sm mb-6">
                 Decrypt and download a file from IPFS using your private key
               </p>
-              <div className="space-y-4">
+              <div className="space-y-4 flex-1">
                 <div className="space-y-2">
                   <Label htmlFor="downloadPrivateKey" className="text-sm text-gray-200">Your Private Key</Label>
                   <Textarea
@@ -485,15 +503,18 @@ export default function Dashboard() {
                     className="font-mono text-xs border-gray-800 bg-black text-gray-200 placeholder:text-gray-500"
                   />
                 </div>
+              </div>
+              <div className="pt-4 flex justify-end">
                 <Button
                   onClick={handleDownloadFile}
                   disabled={loading === 'downloading'}
-                  className="w-full bg-white text-black hover:bg-gray-200"
+                  className="bg-white text-black hover:bg-gray-200 px-6"
                 >
                   {loading === 'downloading' ? 'Downloading...' : 'Decrypt & Download'}
                 </Button>
               </div>
             </section>
+           )}
         </div>
       </div>
     </div>
